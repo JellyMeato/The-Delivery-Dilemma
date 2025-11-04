@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Delivery Dilemma</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    background-color: #fff;
+    color: #000;
+    font-family: 'Patrick Hand', cursive;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin-top: 60px;
+  }
+
+  p {
+    font-size: 1.4em;
+    margin: 15px auto;
+    max-width: 700px;
+  }
+
+  #startScreen, #game {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+  }
+
+  #startScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    transition: opacity 0.6s;
+  }
+
+  #startScreen button {
+    margin-top: 30px;
+    background: none;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+  #startScreen button:hover {
+    background: #f3f3f3;
+  }
+
+  #game {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: white;
+    opacity: 0;
+    transition: opacity 1s;
+  }
+
+  #stageTitle {
+    font-size: 2em;
+    margin-top: 40px;
+  }
+
+  #drawing {
+    width: 400px;
+    height: auto;
+    margin-top: 20px;
+  }
+
+  #description {
+    font-size: 1.4em;
+    margin: 30px auto;
+    max-width: 700px;
+  }
+
+  #choices {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .choiceBtn {
+    background: none;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .choiceBtn:hover {
+    background: #f5f5f5;
+  }
+
+  #result {
+    font-size: 1.2em;
+    opacity: 0;
+    transition: opacity 0.8s;
+  }
+
+  #nextBtn {
+    display: none;
+    background: none;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  #nextBtn:hover {
+    background: #f5f5f5;
+  }
+
+</style>
+</head>
+<body>
+
+
+<div id="startScreen">
+  <h1>The Delivery Dilemma</h1>
+  <p>by @Jelly_Meato</p>
+  <button id="startButton">Click to Begin</button>
+</div>
+
+
+<div id="game">
+  <h2 id="stageTitle"></h2>
+  <img id="drawing" src="" alt="Scene Drawing">
+  <p id="description"></p>
+
+  <div id="choices">
+    <button class="choiceBtn" id="option1"></button>
+    <button class="choiceBtn" id="option2"></button>
+  </div>
+
+  <p id="result"></p>
+  <button id="nextBtn">Next ➜</button>
+</div>
+
+<script>
+  const startScreen = document.getElementById('startScreen');
+  const game = document.getElementById('game');
+  const stageTitle = document.getElementById('stageTitle');
+  const drawing = document.getElementById('drawing');
+  const description = document.getElementById('description');
+  const option1 = document.getElementById('option1');
+  const option2 = document.getElementById('option2');
+  const result = document.getElementById('result');
+  const nextBtn = document.getElementById('nextBtn');
+
+
+  const levels = [
+    {
+      title: "Stage 1: My Cake?",
+      image: "cake.png",
+      desc: "You’ve been tasked with delivering a cake to a party for people you don’t like. Do you deliver the cake and go, or keep it for yourself and eat it?",
+      choices: ["Deliver the cake 🍰", "Keep it for yourself 😋"]
+    },
+    {
+      title: "Stage 2: The Late Letter",
+      image: "letter.png",
+      desc: "You found an important letter that must be delivered by today, but it’s raining heavily. Do you brave the storm or stay home dry?",
+      choices: ["Deliver it anyway 📬", "Stay home ☔"]
+    },
+    {
+      title: "Stage 3: The Frozen Pizza",
+      image: "pizza.png",
+      desc: "Your friend asked you to bring pizza for movie night, but you accidentally bought frozen. Do you admit it or pretend you forgot?",
+      choices: ["Admit the mistake 🍕", "Pretend to forget 🙈"]
+    }
+  ];
+
+  let currentLevel = 0;
+
+  function showLevel(index) {
+    const lvl = levels[index];
+    stageTitle.textContent = lvl.title;
+    drawing.src = lvl.image;
+    description.textContent = lvl.desc;
+    option1.textContent = lvl.choices[0];
+    option2.textContent = lvl.choices[1];
+    result.textContent = "";
+    result.style.opacity = 0;
+    nextBtn.style.display = "none";
+    option1.disabled = false;
+    option2.disabled = false;
+  }
+
+  function randomPercent() {
+    const a = Math.floor(Math.random() * 100);
+    return [a, 100 - a];
+  }
+
+  function showResult(choice) {
+    const [x, y] = randomPercent();
+    result.textContent =
+      choice === 1
+        ? `${x}% chose "${option1.textContent}"\n${y}% chose "${option2.textContent}"`
+        : `${y}% chose "${option1.textContent}"\n${x}% chose "${option2.textContent}"`;
+
+    result.style.opacity = 1;
+    option1.disabled = true;
+    option2.disabled = true;
+    nextBtn.style.display = currentLevel < levels.length - 1 ? "inline-block" : "none";
+  }
+
+  option1.addEventListener("click", () => showResult(1));
+  option2.addEventListener("click", () => showResult(2));
+
+  nextBtn.addEventListener("click", () => {
+    currentLevel++;
+    if (currentLevel < levels.length) {
+      game.style.opacity = 0;
+      setTimeout(() => {
+        showLevel(currentLevel);
+        game.style.opacity = 1;
+      }, 400);
+    } else {
+      game.innerHTML = "<h2>Thanks for playing!</h2><p>You’ve completed The Delivery Dilemma.</p>";
+    }
+  });
+
+  document.getElementById('startButton').addEventListener('click', () => {
+    startScreen.style.opacity = 0;
+    setTimeout(() => {
+      startScreen.style.display = 'none';
+      game.style.display = 'flex';
+      setTimeout(() => game.style.opacity = 1, 50);
+      showLevel(currentLevel);
+    }, 600);
+  });
+</script>
+
+</body>
+</html>

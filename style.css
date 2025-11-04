@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  background: white;
+  font-family: 'Patrick Hand', 'Comic Sans MS', sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hidden { display: none; }
+
+#startScreen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  transition: opacity 1s ease;
+}
+
+#startScreen h1 {
+  font-size: 3em;
+  margin-bottom: 0.2em;
+}
+
+#startScreen p {
+  font-size: 1.2em;
+  margin-bottom: 1em;
+}
+
+#startBtn {
+  padding: 10px 30px;
+  font-size: 1.2em;
+  border: 2px solid black;
+  background: white;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+#startBtn:hover { transform: scale(1.05); }
+
+
+#logo {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+
+#muteBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+#muteBtn:hover { transform: scale(1.1); }
+
+#levelContainer {
+  margin-top: 8%;
+  transition: transform 0.7s ease;
+}
+
+#levelTitle {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+#levelText {
+  font-size: 1.2em;
+  max-width: 600px;
+  margin: 10px auto 20px;
+}
+
+#choices {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+#choices button {
+  padding: 10px 25px;
+  border: 2px solid black;
+  border-radius: 10px;
+  background: white;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+#choices button:hover { transform: scale(1.05); }
